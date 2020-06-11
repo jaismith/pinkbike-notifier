@@ -29,6 +29,7 @@
     "express": "^4.16.4",
     "mongodb": "^3.5.8",
     "morgan": "^1.9.1",
+    "textbelt": "^0.0.4",
     "uid": "^1.0.0"
   },
   "devDependencies": {

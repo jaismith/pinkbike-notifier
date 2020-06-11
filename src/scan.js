@@ -7,6 +7,9 @@ import {
   updateResult,
   getResult,
 } from './mongo';
+import {
+  diff
+} from './diff';
 
 const scanPost = (_req, res) => {
   getQueries()
@@ -66,6 +69,8 @@ const processQuery = async function(query, res) {
           }
         });
     } else if (JSON.stringify(scrapeResult) !== JSON.stringify(current.data)) {
+      diff(current.data, scrapeResult);
+
       updateResult(current._id, {
         timestamp: new Date().toISOString(),
         data: scrapeResult,

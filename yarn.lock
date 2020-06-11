@@ -4116,6 +4116,11 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+textbelt@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/textbelt/-/textbelt-0.0.4.tgz#232987a24cd3239e82f95308811ff76d92a18525"
+  integrity sha512-7HgF9meTJk0zywv5iTjDeE92f+QVjNlIbtYtTkDIGCUlRT9P83cd0W7myL7+mNZNoCviQUTIN3Q1pBAbE3ukLA==
+
 through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
