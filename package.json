@@ -1,8 +1,8 @@
 {
-  "name": "example_express_with_es6",
+  "name": "pinkbike-notifier",
   "version": "3.0.0",
   "description": "",
-  "author": "",
+  "author": "Jai Smith",
   "main": "src/server.js",
   "scripts": {
     "test": "eslint src/**.js",
@@ -13,18 +13,22 @@
   },
   "license": "ISC",
   "engines": {
-    "node": ">=9 <=11",
+    "node": ">=9 <=14",
     "npm": "^5.6.0",
     "yarn": "^1.6.0"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
     "cors": "^2.8.5",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "morgan": "^1.9.1"
+    "mongodb": "^3.5.8",
+    "morgan": "^1.9.1",
+    "uid": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

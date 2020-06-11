@@ -4,6 +4,14 @@ import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 
+import {
+  queriesGet,
+  queriesPost,
+} from './queries';
+import {
+  scanPost,
+} from './scan';
+
 // initialize
 const app = express();
 
@@ -28,10 +36,12 @@ app.use(bodyParser.json());
 
 // additional init stuff should go before hitting the routing
 
-// default index route
-app.get('/', (req, res) => {
-  res.send('hi');
-});
+// queries
+app.get('/queries', queriesGet);
+app.post('/queries', queriesPost);
+
+// scan
+app.post('/scan', scanPost);
 
 // START THE SERVER
 // =============================================================================
