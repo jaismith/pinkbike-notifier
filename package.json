@@ -1,6 +1,6 @@
 {
   "name": "pinkbike-notifier",
-  "version": "3.0.0",
+  "version": "0.0.2",
   "description": "",
   "author": "Jai Smith",
   "main": "src/server.js",
@@ -13,8 +13,8 @@
   },
   "license": "ISC",
   "engines": {
-    "node": ">=9 <=14",
-    "npm": "^5.6.0",
+    "node": "14.0.0",
+    "npm": "^6.14.4",
     "yarn": "^1.6.0"
   },
   "dependencies": {

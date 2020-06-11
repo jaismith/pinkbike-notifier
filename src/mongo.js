@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const mongoConfig = {
-  url: process.env.MONGO_URL,
+  url: process.env.MONGO_URI,
   dbName: process.env.MONGO_DBNAME,
 };
 
