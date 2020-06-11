@@ -42,7 +42,9 @@ const processQuery = async function(query, res) {
 
   if (!current || new Date().getTime() - new Date(current.timestamp).getTime() > query.frequency * 60000) {
     const scrapeResult = await scrape(url);
-    console.log(scrapeResult);
+    
+    console.log(`Successfully scraped ${scrapeResult.length} listings for query ${_id}`)
+
     if (!scrapeResult) {
       console.log(`Error scraping query ${_id}`);
 
