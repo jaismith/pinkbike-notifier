@@ -1,6 +1,12 @@
 import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 
-import { mongoConfig } from '../env';
+dotenv.config();
+
+const mongoConfig = {
+  url: process.env.MONGO_URL,
+  dbName: process.env.MONGO_DBNAME,
+};
 
 export const addQuery = async function(query) {
   const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
