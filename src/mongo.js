@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const mongoConfig = {
-  url: process.env.MONGO_URI,
-  dbName: process.env.MONGO_DBNAME,
+  url: process.env.MONGODB_URI,
+  dbName: process.env.MONGODB_NAME,
 };
 
 export const addQuery = async function(query) {
