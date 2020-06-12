@@ -15,7 +15,7 @@ const notify = (changes, oldItems, newItems, email) => {
     mail.send({
       to: email,
       from: 'pinkbike-notifier@jaismith.dev',
-      subject: 'pinkbike-notifier',
+      subject: 'Update From Tracked Query',
       text: 'NEW LISTING:'
             + `\n\n${listing.Name}`
             + `\n\nPrice: ${listing.Price}`
@@ -34,7 +34,7 @@ const notify = (changes, oldItems, newItems, email) => {
     mail.send({
       to: email,
       from: 'pinkbike-notifier@jaismith.dev',
-      subject: 'pinkbike-notifier',
+      subject: 'Update From Tracked Query',
       text: 'LISTING REMOVED:'
             + `\n\n${listing.Name}`
             + `\n\nPrice: ${listing.Price}`
@@ -61,7 +61,7 @@ const notify = (changes, oldItems, newItems, email) => {
     mail.send({
       to: email,
       from: 'pinkbike-notifier@jaismith.dev',
-      subject: 'pinkbike-notifier',
+      subject: 'Update From Tracked Query',
       text: msg,
     });
   });
