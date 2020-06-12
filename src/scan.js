@@ -12,7 +12,7 @@ import notify from './notify';
 
 async function processQuery(query, res) {
   let { current } = query;
-  const { _id } = query;
+  const { _id, email } = query;
   const url = query.query;
 
   if (current) {
@@ -54,7 +54,7 @@ async function processQuery(query, res) {
         });
     } else if (JSON.stringify(scrapeResult) !== JSON.stringify(current.data)) {
       const changes = diff(current.data, scrapeResult);
-      notify(changes, current.data, scrapeResult, 'jksmithnyc@gmail.com');
+      notify(changes, current.data, scrapeResult, email);
 
       updateResult(current._id, {
         timestamp: new Date().toISOString(),
@@ -70,10 +70,6 @@ async function processQuery(query, res) {
           }
         });
     } else {
-      // DEBUG
-      const changes = diff(current.data, scrapeResult);
-      notify(changes, current.data, scrapeResult, 'jksmithnyc@gmail.com');
-
       updateResult(current._id, {
         timestamp: new Date().toISOString(),
       })
