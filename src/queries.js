@@ -21,6 +21,7 @@ const queriesPost = (req, res) => {
       query: req.body.query,
       current: null,
       frequency: req.body.frequency,
+      email: req.body.email,
     };
 
     addQuery(query)
