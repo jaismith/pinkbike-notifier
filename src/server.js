@@ -8,9 +8,7 @@ import {
   queriesGet,
   queriesPost,
 } from './queries';
-import {
-  scanPost,
-} from './scan';
+import scanPost from './scan';
 
 // initialize
 const app = express();

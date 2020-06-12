@@ -13,7 +13,7 @@ const queriesGet = (_req, res) => {
         error: 'Something went wrong, please check the server logs.',
       });
     });
-}
+};
 
 const queriesPost = (req, res) => {
   try {
@@ -37,7 +37,7 @@ const queriesPost = (req, res) => {
       error: 'Invalid request, please provide a valid query.',
     });
   }
-}
+};
 
 export {
   queriesGet,

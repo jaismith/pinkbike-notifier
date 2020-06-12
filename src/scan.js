@@ -1,6 +1,4 @@
-import {
-  scrape,
-} from './scrape';
+import scrape from './scrape';
 import {
   getQueries,
   addResult,
@@ -8,35 +6,21 @@ import {
   getResult,
 } from './mongo';
 import {
-  diff
+  diff,
 } from './diff';
+import notify from './notify';
 
-const scanPost = (_req, res) => {
-  getQueries()
-    .then((queries) => {
-      for (let i = 0; i < queries.length; i += 1) {
-        processQuery(queries[i], res);
-      }
-
-      res.status(200).end();
-    })
-    .catch(() => {
-      console.log('Error retrieving queries');
-
-      res.status(500).end();
-    })
-}
-
-const processQuery = async function(query, res) {
-  let { current, _id } = query;
-  let url = query.query;
+async function processQuery(query, res) {
+  let { current } = query;
+  const { _id } = query;
+  const url = query.query;
 
   if (current) {
-    current = await getResult(current)
+    current = await getResult(current);
 
     if (!current) {
       console.log('Error retrieving last result');
-        
+
       res.status(500).json({
         error: 'Something went wrong, please check the server logs',
       });
@@ -45,8 +29,8 @@ const processQuery = async function(query, res) {
 
   if (!current || new Date().getTime() - new Date(current.timestamp).getTime() > query.frequency * 60000) {
     const scrapeResult = await scrape(url);
-    
-    console.log(`Successfully scraped ${scrapeResult.length} listings for query ${_id}`)
+
+    console.log(`Successfully scraped ${scrapeResult.length} listings for query ${_id}`);
 
     if (!scrapeResult) {
       console.log(`Error scraping query ${_id}`);
@@ -57,7 +41,7 @@ const processQuery = async function(query, res) {
     if (!current) {
       addResult({
         timestamp: new Date().toISOString(),
-        data: scrapeResult
+        data: scrapeResult,
       }, _id)
         .then((id) => {
           if (id) {
@@ -69,7 +53,8 @@ const processQuery = async function(query, res) {
           }
         });
     } else if (JSON.stringify(scrapeResult) !== JSON.stringify(current.data)) {
-      diff(current.data, scrapeResult);
+      const changes = diff(current.data, scrapeResult);
+      notify(changes, current.data, scrapeResult, 'jksmithnyc@gmail.com');
 
       updateResult(current._id, {
         timestamp: new Date().toISOString(),
@@ -85,6 +70,10 @@ const processQuery = async function(query, res) {
           }
         });
     } else {
+      // DEBUG
+      const changes = diff(current.data, scrapeResult);
+      notify(changes, current.data, scrapeResult, 'jksmithnyc@gmail.com');
+
       updateResult(current._id, {
         timestamp: new Date().toISOString(),
       })
@@ -101,8 +90,22 @@ const processQuery = async function(query, res) {
   } else {
     console.log(`Result ${current._id} for query ${_id} is up to date`);
   }
-} 
+}
 
-export {
-  scanPost,
+const scanPost = (_req, res) => {
+  getQueries()
+    .then((queries) => {
+      for (let i = 0; i < queries.length; i += 1) {
+        processQuery(queries[i], res);
+      }
+
+      res.status(200).end();
+    })
+    .catch(() => {
+      console.log('Error retrieving queries');
+
+      res.status(500).end();
+    });
 };
+
+export default scanPost;

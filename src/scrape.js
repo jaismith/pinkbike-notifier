@@ -1,24 +1,25 @@
 import cheerio from 'cheerio';
 import axios from 'axios';
 
-export async function scrape(url) {
+async function scrape(url) {
   let finished = false;
 
   try {
-    let allResults = [];
+    const allResults = [];
     let currentPage = url;
 
     while (!finished) {
+      // eslint-disable-next-line no-await-in-loop
       const raw = await axios.get(currentPage);
       const data = cheerio.load(raw.data);
 
       const items = data('div[class=bsitem]');
 
-      let results = [];
+      const results = [];
       items.each((itemIndex, itemElement) => {
         const content = data(itemElement).find(' > table > tbody > tr > td:nth-child(2)');
 
-        let item = {};
+        const item = {};
 
         const title = content.find('div > a');
         const properties = content.find('div > div');
@@ -27,13 +28,15 @@ export async function scrape(url) {
         item.Id = data(itemElement).attr('id');
         item.Name = title.text();
         item.Link = title.attr('href');
-        
+
         properties.each((_propIndex, propElement) => {
           const prop = data(propElement).text().trim().split(' :  ');
+          // eslint-disable-next-line prefer-destructuring
           item[prop[0].replace(' ', '')] = prop[1];
         });
 
         item.Location = bottomProperties.first().text().trim();
+        // eslint-disable-next-line prefer-destructuring
         item.Price = bottomProperties.find('b').text().trim().split(':')[1].split('[')[0];
 
         results.push(item);
@@ -51,4 +54,8 @@ export async function scrape(url) {
   } catch (err) {
     console.log('Error scanning site', err.stack);
   }
+
+  return true;
 }
+
+export default scrape;

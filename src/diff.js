@@ -1,44 +1,25 @@
-export const diff = (curr, next) => {
-  curr[0].Price = '$1';
-
-  const currIds = new Set(curr.map(item => item.Id));
-  const nextIds = new Set(next.map(item => item.Id));
-
-  let added = new Set([...nextIds].filter(id => !currIds.has(id)));
-  let removed = new Set([...currIds].filter(id => !nextIds.has(id)));
-  let persisted = new Set([...currIds].filter(id => nextIds.has(id)));
-
-  let changed = {};
-  persisted.forEach((id) => {
-    const changes = compare(getItemById(id, curr), getItemById(id, next));
-    if (Object.keys(changes).length > 0) {
-      changed[id] = changes;
-    }
-  })
-
-  return {
-    added,
-    removed,
-    changed,
-  }
-};
-
 const compare = (a, b) => {
   const aProps = new Set(Object.getOwnPropertyNames(a));
   const bProps = new Set(Object.getOwnPropertyNames(b));
 
-  let added = new Set([...bProps].filter(prop => !aProps.has(prop)));
-  let removed = new Set([...aProps].filter(prop => !bProps.has(prop)));
-  let persisted = new Set([...aProps].filter(prop => bProps.has(prop)));
+  const added = new Set([...bProps].filter((prop) => {
+    return !aProps.has(prop);
+  }));
+  const removed = new Set([...aProps].filter((prop) => {
+    return !bProps.has(prop);
+  }));
+  const persisted = new Set([...aProps].filter((prop) => {
+    return bProps.has(prop);
+  }));
 
-  let changed = [];
+  const changed = [];
   persisted.forEach((prop) => {
     if (a[prop] !== b[prop]) {
       changed.push(prop);
     }
   });
 
-  let result = {};
+  const result = {};
   if (added.length > 0) {
     result.added = added;
   }
@@ -53,6 +34,42 @@ const compare = (a, b) => {
 };
 
 // item MUST exist
-const getItemById = (id, items) => (
-  items.filter(item => item.Id === id)[0]
-);
+export const getItemById = (id, items) => {
+  return (
+    items.filter((item) => {
+      return item.Id === id;
+    })[0]
+  );
+};
+
+export const diff = (curr, next) => {
+  curr.pop();
+  curr[0].Price = '$1';
+
+  const currIds = new Set(curr.map((item) => { return item.Id; }));
+  const nextIds = new Set(next.map((item) => { return item.Id; }));
+
+  const added = new Set([...nextIds].filter((id) => {
+    return !currIds.has(id);
+  }));
+  const removed = new Set([...currIds].filter((id) => {
+    return !nextIds.has(id);
+  }));
+  const persisted = new Set([...currIds].filter((id) => {
+    return nextIds.has(id);
+  }));
+
+  const changed = {};
+  persisted.forEach((id) => {
+    const changes = compare(getItemById(id, curr), getItemById(id, next));
+    if (Object.keys(changes).length > 0) {
+      changed[id] = changes;
+    }
+  });
+
+  return {
+    added,
+    removed,
+    changed,
+  };
+};

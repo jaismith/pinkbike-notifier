@@ -8,27 +8,23 @@ const mongoConfig = {
   dbName: process.env.MONGODB_NAME,
 };
 
-export const addQuery = async function(query) {
+export async function addQuery(query) {
   const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
 
   let id = null;
 
   try {
     await client.connect();
-    
+
     const db = client.db(mongoConfig.dbName);
     const r = await db.collection('queries').insertOne(query);
 
     if (r.insertedCount !== 1) {
       console.log('Error writing query (insertion op failed');
-    }
-
-    else {
+    } else {
       id = r.insertedId;
     }
-  }
-  
-  catch (err) {
+  } catch (err) {
     console.log('Error writing query', err.stack);
   }
 
@@ -37,7 +33,7 @@ export const addQuery = async function(query) {
   return id;
 }
 
-export const getQueries = async function() {
+export async function getQueries() {
   const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
 
   let result = null;
@@ -48,9 +44,7 @@ export const getQueries = async function() {
     const db = client.db(mongoConfig.dbName);
 
     result = await db.collection('queries').find().toArray();
-  }
-  
-  catch (err) {
+  } catch (err) {
     console.log('Error retrieving queries', err.stack);
   }
 
@@ -59,7 +53,7 @@ export const getQueries = async function() {
   return result;
 }
 
-export const addResult = async function(result, queryId) {
+export async function addResult(result, queryId) {
   const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
 
   let id = null;
@@ -72,18 +66,19 @@ export const addResult = async function(result, queryId) {
 
     if (resultsOp.insertedCount !== 1) {
       console.log('Error writing result (insertion op failed)');
-    }
-
-    else {
-      const queryOp = await db.collection('queries').updateOne({ _id: queryId }, { $set: {
-        current: resultsOp.insertedId,
-      }});
+    } else {
+      const queryOp = await db.collection('queries').updateOne(
+        { _id: queryId },
+        {
+          $set: {
+            current: resultsOp.insertedId,
+          },
+        },
+      );
 
       if (queryOp.modifiedCount !== 1) {
         console.log('Error updating query');
-      }
-
-      else {
+      } else {
         id = resultsOp.insertedId;
       }
     }
@@ -96,7 +91,7 @@ export const addResult = async function(result, queryId) {
   return id;
 }
 
-export const updateResult = async function(id, result) {
+export async function updateResult(id, result) {
   const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
 
   let success = false;
@@ -109,9 +104,7 @@ export const updateResult = async function(id, result) {
 
     if (r.modifiedCount !== 1) {
       console.log('Error updating result (update op failed)');
-    }
-
-    else {
+    } else {
       success = true;
     }
   } catch (err) {
@@ -123,7 +116,7 @@ export const updateResult = async function(id, result) {
   return success;
 }
 
-export const getResult = async function(id) {
+export async function getResult(id) {
   const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
 
   let result = null;
@@ -132,10 +125,10 @@ export const getResult = async function(id) {
     await client.connect();
 
     const db = client.db(mongoConfig.dbName);
-    
+
     result = await db.collection('results').findOne({ _id: id });
   } catch (err) {
-    console.log('Error retrieving result', err.stack)
+    console.log('Error retrieving result', err.stack);
   }
 
   client.close();
