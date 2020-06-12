@@ -43,9 +43,6 @@ export const getItemById = (id, items) => {
 };
 
 export const diff = (curr, next) => {
-  curr.pop();
-  curr[0].Price = '$1';
-
   const currIds = new Set(curr.map((item) => { return item.Id; }));
   const nextIds = new Set(next.map((item) => { return item.Id; }));
 
