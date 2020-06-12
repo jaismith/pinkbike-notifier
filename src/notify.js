@@ -14,7 +14,7 @@ const notify = (changes, oldItems, newItems, email) => {
 
     mail.send({
       to: email,
-      from: 'jksmithnyc@gmail.com',
+      from: 'pinkbike-notifier@jaismith.dev',
       subject: 'pinkbike-notifier',
       text: 'NEW LISTING:'
             + `\n\n${listing.Name}`
@@ -33,7 +33,7 @@ const notify = (changes, oldItems, newItems, email) => {
 
     mail.send({
       to: email,
-      from: 'jksmithnyc@gmail.com',
+      from: 'pinkbike-notifier@jaismith.dev',
       subject: 'pinkbike-notifier',
       text: 'LISTING REMOVED:'
             + `\n\n${listing.Name}`
@@ -60,7 +60,7 @@ const notify = (changes, oldItems, newItems, email) => {
 
     mail.send({
       to: email,
-      from: 'jksmithnyc@gmail.com',
+      from: 'pinkbike-notifier@jaismith.dev',
       subject: 'pinkbike-notifier',
       text: msg,
     });
