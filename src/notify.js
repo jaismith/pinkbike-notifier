@@ -4,7 +4,7 @@ import {
   getItemById,
 } from './diff';
 
-const notify = (changes, oldItems, newItems, email) => {
+const notify = (changes, oldItems, newItems, email, queryId) => {
   const { added, removed, changed } = changes;
 
   mail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -15,7 +15,7 @@ const notify = (changes, oldItems, newItems, email) => {
     mail.send({
       to: email,
       from: 'pinkbike-notifier@jaismith.dev',
-      subject: 'Update From Tracked Query',
+      subject: `Update from query ${queryId}`,
       text: 'NEW LISTING:'
             + `\n\n${listing.Name}`
             + `\n\nPrice: ${listing.Price}`
@@ -34,7 +34,7 @@ const notify = (changes, oldItems, newItems, email) => {
     mail.send({
       to: email,
       from: 'pinkbike-notifier@jaismith.dev',
-      subject: 'Update From Tracked Query',
+      subject: `Update from query ${queryId}`,
       text: 'LISTING REMOVED:'
             + `\n\n${listing.Name}`
             + `\n\nPrice: ${listing.Price}`
@@ -49,19 +49,20 @@ const notify = (changes, oldItems, newItems, email) => {
 
   const ids = Object.getOwnPropertyNames(changed);
   ids.forEach((id) => {
-    const listing = getItemById(id, newItems);
-    let msg = `LISTING CHANGED:\n\n${listing.Name}\n`;
+    const oldListing = getItemById(id, oldItems);
+    const newlisting = getItemById(id, newItems);
+    let msg = `LISTING CHANGED:\n\n${newlisting.Name}\n`;
 
     changed[id].changed.forEach((field) => {
-      msg += `\n${field}: ${listing[field]}`;
+      msg += `\n${field}: ${oldListing[field]} -> ${newlisting[field]}`;
     });
 
-    msg += `\n\n${listing.Link}`;
+    msg += `\n\n${newlisting.Link}`;
 
     mail.send({
       to: email,
       from: 'pinkbike-notifier@jaismith.dev',
-      subject: 'Update From Tracked Query',
+      subject: `Update from query ${queryId}`,
       text: msg,
     });
   });

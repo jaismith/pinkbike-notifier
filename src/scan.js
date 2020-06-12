@@ -54,7 +54,7 @@ async function processQuery(query, res) {
         });
     } else if (JSON.stringify(scrapeResult) !== JSON.stringify(current.data)) {
       const changes = diff(current.data, scrapeResult);
-      notify(changes, current.data, scrapeResult, email);
+      notify(changes, current.data, scrapeResult, email, _id);
 
       updateResult(current._id, {
         timestamp: new Date().toISOString(),
